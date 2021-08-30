@@ -17,6 +17,7 @@ class Character:
         self.defence = kwargs.get("defence", 0)
         self.vampirism = kwargs.get("vampirism", 0)
         self.heal_power = kwargs.get("heal_power", 0)
+        self.max_health = self.health
 
     @property
     def is_alive(self):
@@ -57,6 +58,6 @@ class Lancer(Character):
 
 
 class Healer(Character):
-    def __init__(self, *args, health=60, heal_power=2, **kwargs):
-        super().__init__(health=health, heal_power=heal_power, **kwargs)
+    def __init__(self, *args, health=60, damage=0, heal_power=2, **kwargs):
+        super().__init__(health=health, damage=damage, heal_power=heal_power, **kwargs)
         self.char_type = CharType.HEALER
