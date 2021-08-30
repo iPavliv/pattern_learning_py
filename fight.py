@@ -1,8 +1,8 @@
 from character import Warrior, Knight, Defender, Vampire, Lancer, Healer
 
 
-def vampire_health_restoration(target, damage_deal):
-    vamp_restoration = int(round((damage_deal * target.vampirism) / 100))
+def vampire_health_restoration(target, damage):
+    vamp_restoration = int(round((damage * target.vampirism) / 100))
     target.health = min(target.health + vamp_restoration, target.max_health)
 
 
@@ -11,12 +11,12 @@ def fight(fighter_1, fighter_2, debug=False):
     defender = fighter_2
 
     while True:
-        damage_deal = attacker.damage - defender.defence
-        if damage_deal > 0:
-            defender.health -= damage_deal
-            vampire_health_restoration(target=attacker, damage_deal=damage_deal)
+        damage = attacker.attack - defender.defence
+        if damage > 0:
+            defender.health -= damage
+            vampire_health_restoration(target=attacker, damage=damage)
             if debug:
-                print(f'damage: {damage_deal} to {defender.char_type}, defenders health: {defender.health}')
+                print(f'damage: {damage} to {defender.char_type}, defenders health: {defender.health}')
 
             if not defender.is_alive:
                 return f"defender {defender.char_type} died"  # defender == fighter_2
