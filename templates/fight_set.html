@@ -1,0 +1,40 @@
+{% extends 'index.html' %}
+
+{% block title %}Fight{% endblock %}
+
+{% block settings %}
+<div>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="w-1/2 flex justify-center rounded-md border">
+            <p>Fighter 1:
+            <input type="text" name="char_name1" value="John"/><Br>
+            <input type="radio" name="char_type1" value="warrior"> Warrior<Br>
+            <input type="radio" name="char_type1" value="knight"> Knight<Br>
+            <input type="radio" name="char_type1" value="defender"> Defender<Br>
+            <input type="radio" name="char_type1" value="vampire"> Vampire<Br>
+            <input type="radio" name="char_type1" value="healer"> Healer<Br>
+            <input type="radio" name="char_type1" value="lancer"> Lancer<Br></p>
+        </div>
+        <div class="w-1/2 flex justify-center rounded-md border">
+            <p>Fighter 2:
+            <input type="text" name="char_name2" value="Joe"/><Br>
+            <input type="radio" name="char_type2" value="warrior"> Warrior<Br>
+            <input type="radio" name="char_type2" value="knight"> Knight<Br>
+            <input type="radio" name="char_type2" value="defender"> Defender<Br>
+            <input type="radio" name="char_type2" value="vampire"> Vampire<Br>
+            <input type="radio" name="char_type2" value="healer"> Healer<Br>
+            <input type="radio" name="char_type2" value="lancer"> Lancer<Br></p>
+        </div>
+        <input type="submit">
+    </form>
+</div>
+{% endblock %}
+
+
+{% block results %}
+<div>
+    {% for message in messages %}
+        <p class="text-md">{{ message }}</p>
+    {% endfor %}
+</div>
+{% endblock %}
