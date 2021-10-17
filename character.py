@@ -1,5 +1,14 @@
 from enum import Enum
 
+BASIC_DEFAULTS = {
+    'health': 50,
+    'attack': 5,
+    'defence': 0,
+    'vampirism': 0,
+    'heal_power': 0,
+}
+BASIC_ATTRIBUTES = BASIC_DEFAULTS.keys()
+
 
 class CharType(Enum):
     WARRIOR = 1
@@ -11,12 +20,11 @@ class CharType(Enum):
 
 
 class Character:
+    defaults = {**BASIC_DEFAULTS}
+
     def __init__(self, *args, **kwargs):
-        self.health = kwargs.get("health", 50)
-        self.damage = kwargs.get("damage", 5)
-        self.defence = kwargs.get("defence", 0)
-        self.vampirism = kwargs.get("vampirism", 0)
-        self.heal_power = kwargs.get("heal_power", 0)
+        for attr in BASIC_ATTRIBUTES:
+            setattr(self, attr, kwargs.get(attr) or self.defaults.get(attr, 0))
         self.max_health = self.health
 
     @property
@@ -28,36 +36,70 @@ class Character:
 
 
 class Warrior(Character):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.char_type = CharType.WARRIOR
+    char_type = CharType.WARRIOR
 
 
 class Knight(Character):
-    def __init__(self, *args, damage=7, **kwargs):
-        super().__init__(damage=damage, **kwargs)
-        self.char_type = CharType.KNIGHT
+    char_type = CharType.KNIGHT
+    defaults = {
+        **BASIC_DEFAULTS,
+        'attack': 7,
+    }
 
 
 class Defender(Character):
-    def __init__(self, *args, health=60, damage=3, defence=2, **kwargs):
-        super().__init__(health=health, damage=damage, defence=defence, **kwargs)
-        self.char_type = CharType.DEFENDER
+    char_type = CharType.DEFENDER
+    defaults = {
+        **BASIC_DEFAULTS,
+        'health': 60,
+        'attack': 3,
+        'defence': 2,
+    }
 
 
 class Vampire(Character):
-    def __init__(self, *args, health=40, damage=4, vampirism=50, **kwargs):
-        super().__init__(health=health, damage=damage, vampirism=vampirism, **kwargs)
-        self.char_type = CharType.VAMPIRE
+    char_type = CharType.VAMPIRE
+    defaults = {
+        **BASIC_DEFAULTS,
+        'health': 40,
+        'attack': 4,
+        'vampirism': 50
+    }
 
 
 class Lancer(Character):
-    def __init__(self, *args, damage=6, **kwargs):
-        super().__init__(damage=damage, **kwargs)
-        self.char_type = CharType.LANCER
+    char_type = CharType.LANCER
+    defaults = {
+        **BASIC_DEFAULTS,
+        'attack': 6,
+    }
 
 
 class Healer(Character):
-    def __init__(self, *args, health=60, damage=0, heal_power=2, **kwargs):
-        super().__init__(health=health, damage=damage, heal_power=heal_power, **kwargs)
-        self.char_type = CharType.HEALER
+    char_type = CharType.HEALER
+    defaults = {
+        **BASIC_DEFAULTS,
+        'health': 60,
+        'attack': 0,
+        'heal_power': 2,
+    }
+
+
+class CharMaker:
+    def create_warrior(*args, **kwargs):
+        return Warrior(*args, **kwargs)
+
+    def create_knight(*args, **kwargs):
+        return Knight(*args, **kwargs)
+
+    def create_defender(*args, **kwargs):
+        return Defender(*args, **kwargs)
+
+    def create_vampire(*args, **kwargs):
+        return Vampire(*args, **kwargs)
+
+    def create_lancer(*args, **kwargs):
+        return Lancer(*args, **kwargs)
+
+    def create_healer(*args, **kwargs):
+        return Healer(*args, **kwargs)
