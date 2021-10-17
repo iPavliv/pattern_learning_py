@@ -7,7 +7,6 @@ BASIC_DEFAULTS = {
     'vampirism': 0,
     'heal_power': 0,
 }
-BASIC_ATTRIBUTES = BASIC_DEFAULTS.keys()
 
 
 class CharType(Enum):
@@ -23,9 +22,10 @@ class Character:
     defaults = {**BASIC_DEFAULTS}
 
     def __init__(self, *args, **kwargs):
-        for attr in BASIC_ATTRIBUTES:
+        for attr in BASIC_DEFAULTS:
             setattr(self, attr, kwargs.get(attr) or self.defaults.get(attr, 0))
         self.max_health = self.health
+        self.name = kwargs.get("name", "NoName")
 
     @property
     def is_alive(self):
