@@ -1,10 +1,15 @@
-from fastapi import FastAPI, Query, Form
 from fight import fight
 from utils import create_fighter
-import json
+from fastapi import FastAPI, Body
+from pydantic import BaseModel
 
 APP = FastAPI()
 CHAR_TYPES = ["warrior", "knight", "defender", "vampire", "lancer", "healer"]
+
+
+class CharModel(BaseModel):
+    char_name: str
+    char_type: str
 
 
 @APP.get("/")
@@ -13,12 +18,11 @@ def root():
 
 
 @APP.post("/")
-def choose(
-        fighter_1=Query("warrior", enum=CHAR_TYPES),
-        fighter_1_name=Form(default="John"),
-        fighter_2=Query("warrior", enum=CHAR_TYPES),
-        fighter_2_name=Form(default="Joe")):
-    fighter_1 = create_fighter(char_type=fighter_1, char_name=fighter_1_name)
-    fighter_2 = create_fighter(char_type=fighter_2, char_name=fighter_2_name)
-    result = fight(fighter_1, fighter_2, False)
-    return json.dumps(result)
+def start_fight(
+        fighter_1: CharModel = Body(default=CharModel(char_name="John", char_type="warrior")),
+        fighter_2: CharModel = Body(default=CharModel(char_name="Joe", char_type="warrior"))
+):
+    fighter_1 = create_fighter(fighter_1)
+    fighter_2 = create_fighter(fighter_2)
+    result = fight(fighter_1, fighter_2)
+    return result

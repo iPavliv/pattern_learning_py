@@ -1,3 +1,5 @@
+import json
+from functools import wraps
 from character import CharMaker
 
 FACTORY_MAP = {
@@ -10,5 +12,13 @@ FACTORY_MAP = {
 }
 
 
-def create_fighter(char_type, char_name):
-    return FACTORY_MAP[char_type](name=char_name)
+def create_fighter(char_params):
+    return FACTORY_MAP[char_params.char_type](name=char_params.char_name)
+
+
+def make_log(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        log = f(*args, **kwargs)
+        return json.dumps(log)
+    return wrapper
