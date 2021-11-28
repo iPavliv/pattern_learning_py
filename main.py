@@ -1,6 +1,7 @@
 import uvicorn
 from fight import fight
 from models.char_model import CharModel, Fighter1, Fighter2
+from statistics import Statistics
 from utils import create_fighter
 from fastapi import FastAPI, Request, Depends
 from fastapi.responses import HTMLResponse
@@ -29,6 +30,8 @@ def start_fight(
     fighter_1 = create_fighter(fighter_1)
     fighter_2 = create_fighter(fighter_2)
     result = fight(fighter_1, fighter_2)
+    stats = Statistics()
+    # stats.increase_score - to improve (and move) statistic increase
     return TEMPLATES.TemplateResponse("fight_set.html", {
         "request": request, "messages": result
     })

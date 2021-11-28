@@ -1,3 +1,15 @@
+class ResultAdapter:
+    def __init__(self, fighter_1, fighter_2):
+        self.fighter_1 = fighter_1
+        self.fighter_2 = fighter_2
+        self.result = None
+
+    def convert_log_to_bool(self, fight_log):
+        name, char_type, _ = fight_log[-1].split(' ')
+        self.result = name == self.fighter_1.name and char_type == self.fighter_1.char_type
+        return self.result
+
+
 def vampire_health_restoration(target, damage):
     vamp_restoration = int(round((damage * target.vampirism) / 100))
     target.health = min(target.health + vamp_restoration, target.max_health)
@@ -29,7 +41,9 @@ def battle(army_1, army_2):
         unit_1 = army_1.units[0]
         if army_2.anyone_alive:
             unit_2 = army_2.units[0]
-            if fight(unit_1, unit_2): # make adapter to make fight return bool value
+            result_adpt = ResultAdapter(unit_1, unit_2)
+            first_won = result_adpt.convert_log_to_bool(fight(unit_1, unit_2))
+            if first_won:  # make adapter to make fight return bool value
                 army_2.units.pop(unit_2)
             else:
                 army_1.units.pop(unit_1)
