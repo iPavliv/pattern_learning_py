@@ -2,6 +2,8 @@ class Statistics:
     __instance = None
 
     def __init__(self):
+        if Statistics.__instance:
+            raise Exception('No more instances allowed')
         self.score_player = 0
         self.score_computer = 0
         Statistics.__instance = self
