@@ -1,8 +1,9 @@
 import uvicorn
 from fight import fight
+from models.char_model import CharModel, Fighter1, Fighter2
+from statistics import Statistics
 from utils import create_fighter
-from fastapi import FastAPI, Body, Request, Form, Depends
-from pydantic import BaseModel
+from fastapi import FastAPI, Request, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -11,37 +12,6 @@ APP = FastAPI()
 CHAR_TYPES = ["warrior", "knight", "defender", "vampire", "lancer", "healer"]
 APP.mount("/static", StaticFiles(directory="static"), name="static")
 TEMPLATES = Jinja2Templates(directory="templates")
-
-
-class CharModel(BaseModel):
-    char_name: str
-    char_type: str
-
-
-class Fighter1(BaseModel):
-    char_name: str
-    char_type: str
-
-    @classmethod
-    def as_form(
-        cls,
-        char_name1: str = Form(...),
-        char_type1: str = Form(...)
-    ):
-        return cls(char_name=char_name1, char_type=char_type1)
-
-
-class Fighter2(BaseModel):
-    char_name: str
-    char_type: str
-
-    @classmethod
-    def as_form(
-        cls,
-        char_name2: str = Form(...),
-        char_type2: str = Form(...)
-    ):
-        return cls(char_name=char_name2, char_type=char_type2)
 
 
 @APP.get("/", response_class=HTMLResponse)
@@ -60,6 +30,8 @@ def start_fight(
     fighter_1 = create_fighter(fighter_1)
     fighter_2 = create_fighter(fighter_2)
     result = fight(fighter_1, fighter_2)
+    stats = Statistics()
+    # stats.increase_score - to improve (and move) statistic increase
     return TEMPLATES.TemplateResponse("fight_set.html", {
         "request": request, "messages": result
     })
