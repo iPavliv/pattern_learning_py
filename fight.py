@@ -37,7 +37,7 @@ class FightAdapter:
         """
         fight_log = fight(self.fighter_1, self.fighter_2)
         name, char_type, _ = fight_log[-1].split(' ')
-        self.result = name == self.fighter_1.name and char_type == self.fighter_1.char_type
+        self.result = name == self.fighter_1.name and char_type == str(self.fighter_1.char_type)
 
         stats = Statistics.get_instance()
         stats.increase_score(self.result)

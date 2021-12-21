@@ -16,3 +16,8 @@ class Menu:
         result = fight_adpt.fight()
         score = self.stats.show_score()
         return score
+
+
+if __name__ == '__main__':
+    menu = Menu()
+    res = menu.play()
